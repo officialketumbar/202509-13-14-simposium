@@ -1,132 +1,73 @@
-// 1. CONFIG (tanpa spasi di akhir!)
-const SCRIPT_URL ='https://script.google.com/macros/s/AKfycbxKURcAJzLkOIukUAg1fN-ZopuMh7VEdGgAxOdv1grEDMLUWb9tWz_v997I_aPjb3k/exec';
-// 2. UI HELPER -------------------------------------------------
-function showLoading() {
-  document.getElementById('loadingOverlay').style.display = 'flex';
-}
-function hideLoading() {
-  document.getElementById('loadingOverlay').style.display = 'none';
-}
-function showStatus(elId, msg, type) {
-  const el = document.getElementById(elId);
-  el.textContent = msg;
-  el.className = `status-message ${type}`;
-  el.style.display = 'block';
-}
-function clearStatus(elId) {
-  const el = document.getElementById(elId);
-  el.textContent = '';
-  el.style.display = 'none';
-}
+// 1. CONFIG (ganti dengan URL baru Anda, pastikan tanpa spasi)
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxxxxxxxxxxxxxxxx/exec';
 
-// 3. CEK NIK ---------------------------------------------------
+// 2. UI HELPER ----------
+const showLoading = () => document.getElementById('loadingOverlay').style.display = 'flex';
+const hideLoading = () => document.getElementById('loadingOverlay').style.display = 'none';
+function showStatus(el, msg, type) {
+  const node = document.getElementById(el);
+  node.textContent = msg; node.className = `status-message ${type}`; node.style.display = 'block';
+}
+function clearStatus(el) { const node = document.getElementById(el); node.textContent = ''; node.style.display = 'none'; }
+
+// 3. CEK NIK ----------
 async function checkNIK() {
   const nik = document.getElementById('nikInput').value.trim();
-
-  if (!nik) return showStatus('nikStatus', 'NIK tidak boleh kosong!', 'error');
-  if (nik.length !== 16) return showStatus('nikStatus', 'NIK harus 16 digit!', 'error');
-  if (!/^\d+$/.test(nik)) return showStatus('nikStatus', 'NIK hanya boleh angka!', 'error');
-
-  showLoading();
-
-  try {
-    const endpoint = `${SCRIPT_URL}?action=checkNIK&nik=${nik}`;
-    console.log('Fetching:', endpoint);          // untuk debug
-    const res = await fetch(endpoint);
-    const data = await res.json();
-
-    if (data.success) {
-      if (data.found) {
-        showStatus('nikStatus', 'Data ditemukan! Form terisi otomatis.', 'success');
-        fillForm(data.data);
-        document.getElementById('submitBtn').textContent = 'Submit Registrasi Ulang';
-      } else {
-        showStatus('nikStatus', 'NIK belum terdaftar. Silakan isi data lengkap.', 'info');
-        clearForm();
-        document.getElementById('nikDisplay').value = nik;
-        document.getElementById('submitBtn').textContent = 'Daftar Baru';
-      }
-      document.getElementById('registrationForm').style.display = 'block';
-    } else {
-      showStatus('nikStatus', 'Error: ' + data.message, 'error');
-    }
-  } catch (err) {
-    console.error(err);
-    showStatus('nikStatus', 'Error koneksi: ' + err.message, 'error');
+  if (!nik || nik.length !== 16 || !/^\d+$/.test(nik)) {
+    showStatus('nikStatus', 'NIK harus 16 digit angka!', 'error');
+    return;
   }
+  showLoading();
+  try {
+    const res = await fetch(`${SCRIPT_URL}?action=checkNIK&nik=${nik}`);
+    const o = await res.json();
+    if (o.success) {
+      if (o.found) { fillForm(o.data); showStatus('nikStatus','Data ditemukan!','success'); }
+      else { clearForm(); document.getElementById('nikDisplay').value = nik; showStatus('nikStatus','NIK belum terdaftar','info'); }
+      document.getElementById('registrationForm').style.display = 'block';
+    } else { showStatus('nikStatus','Error: '+o.message,'error'); }
+  } catch (e) { showStatus('nikStatus','Error koneksi: '+e.message,'error'); }
   hideLoading();
 }
-
-// 4. ISI / BERSIHKAN FORM -------------------------------------
 function fillForm(d) {
   document.getElementById('nikDisplay').value = d.nik;
-  document.getElementById('nama').value = d.nama;
-  document.getElementById('instansi').value = d.instansi;
-  document.getElementById('email').value = d.email;
-  document.getElementById('noTelp').value = d.noTelp;
-  document.getElementById('profesi').value = d.profesi;
+  document.getElementById('nama').value       = d.nama;
+  document.getElementById('instansi').value   = d.instansi;
+  document.getElementById('email').value      = d.email;
+  document.getElementById('noTelp').value     = d.noTelp;
+  document.getElementById('profesi').value    = d.profesi;
 }
 function clearForm() {
-  document.getElementById('nama').value = '';
-  document.getElementById('instansi').value = '';
-  document.getElementById('email').value = '';
-  document.getElementById('noTelp').value = '';
-  document.getElementById('profesi').value = '';
+  ['nama','instansi','email','noTelp','profesi'].forEach(id=>document.getElementById(id).value='');
 }
 
-// 5. SUBMIT FORM ----------------------------------------------
-document.getElementById('registrationForm').addEventListener('submit', async (e) => {
+// 4. SUBMIT ----------
+document.getElementById('registrationForm').addEventListener('submit', async (e)=>{
   e.preventDefault();
-
-  const formData = {
+  const d = {
     nik: document.getElementById('nikDisplay').value,
     nama: document.getElementById('nama').value,
     instansi: document.getElementById('instansi').value,
     email: document.getElementById('email').value,
     noTelp: document.getElementById('noTelp').value,
-    profesi: document.getElementById('profesi').value,
+    profesi: document.getElementById('profesi').value
   };
-
-  if (!Object.values(formData).every(v => v.trim())) {
-    return showStatus('submitStatus', 'Semua field harus diisi!', 'error');
-  }
-
+  if (!Object.values(d).every(v=>v.trim())) { showStatus('submitStatus','Isian belum lengkap!','error'); return; }
   showLoading();
   try {
     const res = await fetch(SCRIPT_URL, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ action: 'register', data: formData })
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({action:'register', data:d})
     });
-    const result = await res.json();
-
-    if (result.success) {
-      showStatus('submitStatus', 'Registrasi berhasil! Terima kasih.', 'success');
+    const o = await res.json();
+    if (o.success) {
+      showStatus('submitStatus','Data berhasil disimpan!','success');
       document.getElementById('registrationForm').reset();
       document.getElementById('registrationForm').style.display = 'none';
-      document.getElementById('nikInput').value = '';
+      document.getElementById('nikInput').value='';
       clearStatus('nikStatus');
-    } else {
-      showStatus('submitStatus', 'Error: ' + result.message, 'error');
-    }
-  } catch (err) {
-    console.error(err);
-    showStatus('submitStatus', 'Error koneksi: ' + err.message, 'error');
-  }
+    } else { showStatus('submitStatus','Error: '+o.message,'error'); }
+  } catch (e) { showStatus('submitStatus','Error koneksi: '+e.message,'error'); }
   hideLoading();
 });
-
-// 6. OPSI AUTO-CHECK BILA 16 DIGIT ----------------------------
-document.getElementById('nikInput').addEventListener('input', (e) => {
-  if (e.target.value.length === 16) {
-    // uncomment baris di bawah untuk auto-check
-    // checkNIK();
-  }
-});
-
-
-
-
-
-
-
