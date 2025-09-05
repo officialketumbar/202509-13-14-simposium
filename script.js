@@ -117,7 +117,7 @@ document.getElementById('registrationForm').addEventListener('submit', async fun
     showLoading();
     
     try {
-        const response = await fetch(https://script.google.com/macros/s/AKfycbxYh8CMEjRRHBdvGSZB1RBZt_oyFkQ1AXV5sXIUV5ogLknJSFe9_XmOFfDZcAZ0QYac/exec, {
+        const response = await fetch('https://script.google.com/macros/s/AKfycbxYh8CMEjRRHBdvGSZB1RBZt_oyFkQ1AXV5sXIUV5ogLknJSFe9_XmOFfDZcAZ0QYac/exec', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -153,3 +153,4 @@ document.getElementById('nikInput').addEventListener('input', function(e) {
         // checkNIK();
     }
 });
+
