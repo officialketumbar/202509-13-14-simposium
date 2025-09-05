@@ -1,5 +1,5 @@
 // 1. CONFIG (tanpa spasi di akhir!)
-const SCRIPT_URL ='https://script.google.com/macros/s/AKfycbwFVM58W9nB3pjLMH-ddjBsHeQShzLYqRog-2VGhLlW3CI96mLgeSGUenoG52KEFYdb/exec';
+const SCRIPT_URL ='https://script.google.com/macros/s/AKfycbxKURcAJzLkOIukUAg1fN-ZopuMh7VEdGgAxOdv1grEDMLUWb9tWz_v997I_aPjb3k/exec';
 // 2. UI HELPER -------------------------------------------------
 function showLoading() {
   document.getElementById('loadingOverlay').style.display = 'flex';
@@ -123,6 +123,7 @@ document.getElementById('nikInput').addEventListener('input', (e) => {
     // checkNIK();
   }
 });
+
 
 
 
