@@ -1,0 +1,50 @@
+:root{
+  --primary:#667eea;
+  --secondary:#764ba2;
+  --error:#e74c3c;
+  --success:#27ae60;
+  --info:#3498db;
+  --light:#f5f7fa;
+  --radius:8px;
+  --max-width:480px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial;
+  background:linear-gradient(135deg,var(--primary),var(--secondary));
+  min-height:100vh;display:flex;align-items:center;justify-content:center;padding:15px;
+}
+.container{
+  background:#fff;border-radius:var(--radius);box-shadow:0 10px 30px rgba(0,0,0,.25);
+  max-width:var(--max-width);width:100%;overflow:hidden;
+}
+h1{
+  background:linear-gradient(135deg,var(--primary),var(--secondary));
+  color:#fff;text-align:center;padding:20px;font-size:1.4rem;
+}
+section,form{padding:20px}
+label{font-weight:600;display:block;margin-bottom:6px;color:#333}
+input{
+  width:100%;padding:10px;border:1px solid #ccd0d5;border-radius:var(--radius);font-size:1rem;
+}
+input:focus{outline:none;border-color:var(--primary)}
+.input-group{display:flex;gap:10px}
+button{
+  padding:10px 16px;border:none;border-radius:var(--radius);font-size:1rem;cursor:pointer;
+  background:var(--primary);color:#fff;transition:background .2s;
+}
+button:disabled{background:#a0a8c0;cursor:not-allowed}
+button[type="submit"]{width:100%;margin-top:10px;background:linear-gradient(135deg,var(--primary),var(--secondary))}
+.status{margin-top:10px;padding:10px;border-radius:var(--radius);font-size:.9rem;display:none}
+.status.success{background:#d4edda;color:#155724}
+.status.error{background:#f8d7da;color:#721c24}
+.status.info{background:#d1ecf1;color:#0c5460}
+#loadingOverlay{
+  position:fixed;inset:0;background:rgba(0,0,0,.55);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;
+}
+.spinner{
+  width:40px;height:40px;border:4px solid #f3f3f3;border-top-color:var(--primary);border-radius:50%;
+  animation:spin 1s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
