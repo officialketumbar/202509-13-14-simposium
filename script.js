@@ -1,5 +1,5 @@
 // Konfigurasi Google Apps Script
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyA2f7OdFyqSiPKS3o3Ve__S_XESI-EEEHy51gXUmVIdp_lJzaTLHGWTuwjggzFtne1/exec'; // Ganti dengan URL Google Apps Script Anda
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyCJvqm0NdUr72fYUdwX_EyJlk-n-11f1ns7qTkIj5EErgwKhxYUzAG0A4FZXK6HNXl/exec'; // Ganti dengan URL Google Apps Script Anda
 
 // Fungsi untuk menampilkan loading
 function showLoading() {
@@ -48,7 +48,7 @@ async function checkNIK() {
     showLoading();
     
     try {
-        const response = await fetch(`${SCRIPT_URL}?action=checkNIK&nik=${nik}`);
+        const response = await fetch(`${'https://script.google.com/macros/s/AKfycbyCJvqm0NdUr72fYUdwX_EyJlk-n-11f1ns7qTkIj5EErgwKhxYUzAG0A4FZXK6HNXl/exec'}?action=checkNIK&nik=${nik}`);
         const data = await response.json();
         
         if (data.success) {
@@ -117,7 +117,7 @@ document.getElementById('registrationForm').addEventListener('submit', async fun
     showLoading();
     
     try {
-        const response = await fetch(SCRIPT_URL, {
+        const response = await fetch('https://script.google.com/macros/s/AKfycbyCJvqm0NdUr72fYUdwX_EyJlk-n-11f1ns7qTkIj5EErgwKhxYUzAG0A4FZXK6HNXl/exec', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -152,4 +152,5 @@ document.getElementById('nikInput').addEventListener('input', function(e) {
         // Optional: auto-check setelah 16 digit
         // checkNIK();
     }
+
 });
