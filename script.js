@@ -30,7 +30,7 @@ async function checkNIK() {
   showLoading();
 
   try {
-    const endpoint = `${'https://script.google.com/macros/s/AKfycbxKURcAJzLkOIukUAg1fN-ZopuMh7VEdGgAxOdv1grEDMLUWb9tWz_v997I_aPjb3k/exec'}?action=checkNIK&nik=${nik}`;
+    const endpoint = `${SCRIPT_URL}?action=checkNIK&nik=${nik}`;
     console.log('Fetching:', endpoint);          // untuk debug
     const res = await fetch(endpoint);
     const data = await res.json();
@@ -93,7 +93,7 @@ document.getElementById('registrationForm').addEventListener('submit', async (e)
 
   showLoading();
   try {
-    const res = await fetch('https://script.google.com/macros/s/AKfycbxKURcAJzLkOIukUAg1fN-ZopuMh7VEdGgAxOdv1grEDMLUWb9tWz_v997I_aPjb3k/exec', {
+    const res = await fetch(SCRIPT_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ action: 'register', data: formData })
@@ -123,6 +123,7 @@ document.getElementById('nikInput').addEventListener('input', (e) => {
     // checkNIK();
   }
 });
+
 
 
 
