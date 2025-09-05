@@ -1,5 +1,5 @@
 // 1. CONFIG (ganti dengan URL baru Anda, pastikan tanpa spasi)
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxxxxxxxxxxxxxxxx/exec';
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyW6H3q_1SHeIqNL16BIRGhuBm1S4tg64Wy7S1yqKP4iwEL9Ccds5L9C7WIFrS2pZ14/exec';
 
 // 2. UI HELPER ----------
 const showLoading = () => document.getElementById('loadingOverlay').style.display = 'flex';
@@ -71,3 +71,4 @@ document.getElementById('registrationForm').addEventListener('submit', async (e)
   } catch (e) { showStatus('submitStatus','Error koneksi: '+e.message,'error'); }
   hideLoading();
 });
+
